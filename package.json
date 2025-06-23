@@ -1,0 +1,40 @@
+{
+  "name": "@le-pepe/vue-auth",
+  "version": "0.0.1",
+  "description": "Plugin de Vue 3 para manejar autenticación con JWT y refresh tokens opcionales",
+  "main": "dist/index.umd.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.umd.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "release": "standard-version"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.3",
+    "standard-version": "^9.5.0",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "axios": "^1.10.0"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.17",
+    "vue-router": "^4.5.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
