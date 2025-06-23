@@ -1,9 +1,9 @@
 // src/plugins/auth.ts
 import { inject, type App } from 'vue'
 import type { Router, RouteLocationNormalized } from 'vue-router'
-import axios, {type AxiosInstance } from 'axios'
+import axios, { AxiosInstance } from 'axios'
 
-interface AuthOptions {
+export interface AuthOptions {
     tokenKey?: string
     refreshTokenKey?: string
     loginUrl?: string
@@ -15,11 +15,11 @@ interface AuthOptions {
     apiUrl?: string
 }
 
-interface LoginCredentials {
+export interface LoginCredentials {
     [key: string]: any
 }
 
-interface AuthMeta {
+export interface AuthMeta {
     requiresAuth?: boolean
     guestOnly?: boolean
     redirectTo?: string
@@ -75,7 +75,7 @@ function createAuthInstance(options: AuthOptions = {}) {
             return auth.token
         },
 
-        getHttp(): AxiosInstance {
+        http(): AxiosInstance {
             return http
         },
 
