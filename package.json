@@ -1,6 +1,6 @@
 {
   "name": "@le-pepe/vue-auth",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Plugin de Vue 3 para manejar autenticación con JWT y refresh tokens opcionales",
   "main": "dist/index.umd.cjs",
   "module": "dist/index.mjs",
