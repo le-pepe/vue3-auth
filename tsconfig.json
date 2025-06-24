@@ -3,6 +3,7 @@
     "target": "ESNext",
     "module": "ES2020",
     "declaration": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
     "declarationDir": "dist",
     "emitDeclarationOnly": true,
     "moduleResolution": "node",
