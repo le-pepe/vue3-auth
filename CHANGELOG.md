@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/le-pepe/vue3-auth/compare/v0.0.5...v0.0.6) (2025-06-24)
+
+
+### Features
+
+* **docs:** add README.md for Vue 3 JWT authentication plugin with usage examples and configuration options ([1d5b9a1](https://github.com/le-pepe/vue3-auth/commit/1d5b9a15b1e1823d573c1171b4faea900b3996bd))
+
 ### [0.0.5](https://github.com/le-pepe/vue3-auth/compare/v0.0.4...v0.0.5) (2025-06-24)
 
 
