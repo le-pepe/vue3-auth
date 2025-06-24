@@ -1,15 +1,18 @@
+// vite.config.ts
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
-import path from 'path'
 import dts from 'vite-plugin-dts'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
     plugins: [dts()],
     build: {
         lib: {
-            entry: path.resolve(__dirname, 'src/index.ts'),
-            name: 'Vue3Auth',
-            formats: ['es', 'umd'],
-            fileName: (format) => `index.${format}.js`
+            entry: resolve(__dirname, 'src/index.ts'),
+            name: 'VueAuth',
+            fileName: 'index'
         },
         rollupOptions: {
             external: ['vue', 'axios'],

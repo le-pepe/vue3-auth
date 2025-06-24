@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "ESNext",
+    "module": "ES2020",
     "declaration": true,
     "declarationDir": "dist",
     "emitDeclarationOnly": true,
