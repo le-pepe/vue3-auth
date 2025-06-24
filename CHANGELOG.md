@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/le-pepe/vue3-auth/compare/v0.0.4...v0.0.5) (2025-06-24)
+
+
+### Features
+
+* **package.json:** update main entry point to dist/index.js and change build script to use tsup for better bundling ([2ffdb3a](https://github.com/le-pepe/vue3-auth/commit/2ffdb3a0cf8bffba584f8755bd3515d3093e2444))
+
 ### [0.0.4](https://github.com/le-pepe/vue3-auth/compare/v0.0.3...v0.0.4) (2025-06-24)
 
 
