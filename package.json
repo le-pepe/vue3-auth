@@ -1,25 +1,45 @@
 {
   "name": "@le-pepe/vue-auth",
   "version": "0.0.6",
-  "description": "Plugin de Vue 3 para manejar autenticación con JWT y refresh tokens opcionales",
+  "description": "Vue 3 plugin for handling JWT authentication with optional refresh tokens",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     }
   },
-  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
     "dev": "vite",
     "build": "tsup",
+    "prepare": "npm run build",
     "preview": "vite preview",
     "release": "standard-version"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/le-pepe/vue3-auth.git"
+  },
+  "keywords": [
+    "vue",
+    "vue3",
+    "authentication",
+    "auth",
+    "jwt",
+    "refresh-token",
+    "vue-router"
+  ],
+  "author": "Le Pepe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/le-pepe/vue3-auth/issues"
+  },
+  "homepage": "https://github.com/le-pepe/vue3-auth#readme",
   "devDependencies": {
     "@types/node": "^24.0.3",
     "standard-version": "^9.5.0",

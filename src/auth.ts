@@ -18,6 +18,7 @@ export interface AuthOptions {
     }
     router?: Router
     defaultRedirect?: string
+    loginRoute?: string // Nueva opción para definir la ruta de login
     useRefreshToken?: boolean
     axios?: AxiosInstance
     apiUrl?: string
@@ -53,6 +54,7 @@ function createAuthInstance(options: AuthOptions = {}) {
     const profileDataKey = options.profile?.dataKey
     const router = options.router
     const defaultRedirect = options.defaultRedirect || '/dashboard'
+    const loginRoute = options.loginRoute || '/login'
     const useRefreshToken = options.useRefreshToken ?? false
     const storage = options.storage || 'session'
     const tokenPath = options.tokenPath || 'token'
@@ -143,6 +145,17 @@ function createAuthInstance(options: AuthOptions = {}) {
             return httpInstance
         },
 
+        async redirectToLogin() {
+            if (router) {
+                const currentRoute = router.currentRoute.value
+                // Solo guardamos la ruta actual si no es la de login
+                if (currentRoute.path !== loginRoute) {
+                    _redirectAfterLogin = currentRoute.fullPath
+                }
+                await router.push(loginRoute)
+            }
+        },
+
         async login(credentials: LoginCredentials) {
             const res = await httpInstance.post(loginUrl, credentials)
             const payload = loginDataKey ? getByPath(res.data, loginDataKey) : res.data
@@ -162,7 +175,7 @@ function createAuthInstance(options: AuthOptions = {}) {
             if (router) {
                 const target = _redirectAfterLogin || defaultRedirect
                 _redirectAfterLogin = null
-                router.push(target)
+                await router.push(target)
             }
 
             return res.data
@@ -171,6 +184,7 @@ function createAuthInstance(options: AuthOptions = {}) {
         async logout() {
             await auth.clearToken()
             await auth.clearRefreshToken()
+            await auth.redirectToLogin()
         },
 
         async tryRefreshToken() {
@@ -203,15 +217,54 @@ function createAuthInstance(options: AuthOptions = {}) {
     }
 
     // Interceptor para inyectar token dinámicamente
-    httpInstance.interceptors.request.use(config => {
-        const token = auth.getToken()
-        if (token) {
+    httpInstance.interceptors.request.use(async (config) => {
+        // Verificar si hay token en storage antes de cada request
+        const storedToken = await storageAPI.get(tokenKey)
+
+        if (storedToken) {
+            auth.token = storedToken
             config.headers = config.headers || {}
-            config.headers.Authorization = `Bearer ${token}`
+            config.headers.Authorization = `Bearer ${storedToken}`
+        } else {
+            // Si no hay token en storage, redireccionar al login
+            await auth.redirectToLogin()
+            return Promise.reject(new Error('No token found'))
         }
+
         return config
+    }, (error) => {
+        return Promise.reject(error)
     })
 
+    // Interceptor para manejar respuestas 401
+    httpInstance.interceptors.response.use(
+        (response) => response,
+        async (error) => {
+            const originalRequest = error.config
+
+            // Si es un 401 y no es un retry
+            if (error.response?.status === 401 && !originalRequest._retry) {
+                originalRequest._retry = true
+
+                // Intentar refrescar el token si está habilitado
+                if (useRefreshToken) {
+                    const refreshed = await auth.tryRefreshToken()
+                    if (refreshed) {
+                        // Reintentar la request original con el nuevo token
+                        return httpInstance(originalRequest)
+                    }
+                }
+
+                // Si no se pudo refrescar o no está habilitado, hacer logout
+                await auth.logout()
+                return Promise.reject(error)
+            }
+
+            return Promise.reject(error)
+        }
+    )
+
+    // Inicializar tokens desde storage
     Promise.all([
         storageAPI.get(tokenKey).then(value => auth.token = value),
         useRefreshToken ? storageAPI.get(refreshTokenKey).then(value => auth.refreshToken = value) : Promise.resolve()
@@ -235,12 +288,13 @@ export function createAuth(options: AuthOptions = {}) {
                     const requiresAuth = meta.requiresAuth
                     const guestOnly = meta.guestOnly
                     const redirectTo = meta.redirectTo || options.defaultRedirect || '/dashboard'
+                    const loginRoute = options.loginRoute || '/login'
 
                     if (requiresAuth && !auth.isAuthenticated()) {
                         const refreshed = await auth.tryRefreshToken()
                         if (!refreshed) {
                             _redirectAfterLogin = to.fullPath
-                            return next({ path: redirectTo })
+                            return next({ path: loginRoute })
                         }
                     }
 
