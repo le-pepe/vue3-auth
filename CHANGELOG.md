@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/le-pepe/vue3-auth/compare/v0.0.6...v0.0.7) (2025-07-10)
+
+
+### Features
+
+* **docs:** update README to include automatic token validation, redirect ([6815097](https://github.com/le-pepe/vue3-auth/commit/6815097dfb08e44cf76bcab5ffdaf63fbffa2c7d))
+
 ### [0.0.6](https://github.com/le-pepe/vue3-auth/compare/v0.0.5...v0.0.6) (2025-06-24)
 
 
